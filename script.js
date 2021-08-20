@@ -193,7 +193,7 @@ const displayCategoriesOffice = () => {
     >
       <div class="row">
         <h3>${category.toUpperCase()}</h3>
-        <table class="table table-striped table-dark">
+        <table class="table table-striped table-dark text-center">
           <thead>
             <tr>
               <th scope="col">ID</th>

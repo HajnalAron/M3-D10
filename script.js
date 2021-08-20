@@ -1,8 +1,8 @@
 ///Global variables
 const apiKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MTFjZjY5MTJkNTI2MjAwMTViNmRjOTciLCJpYXQiOjE2MjkzODAyNjYsImV4cCI6MTYzMDU4OTg2Nn0.UxeebZD64XATR_FQ4U4ISpUcZYFec-3wli83C703UqA"
 const apiUrl = "https://striveschool-api.herokuapp.com/api/movies/"
-const categories = []
-const movies = {}
+let categories = []
+let movies = {}
 ///API Functions
 const getCategories = async () => {
     try {
@@ -74,6 +74,7 @@ const newMovie = async (event) => {
     console.log(apiResponse)
     if (apiResponse.status === 200){
         let result = await apiResponse.json()
+        makeLists()
         console.log(result)
         }
         else if(apiResponse.status > 400 && apiResponse.status < 500){
@@ -101,6 +102,7 @@ const editMovie = async (data) => {
     console.log(apiResponse)
     if (apiResponse.status === 200){
         let result = await apiResponse.json()
+        makeLists()
         console.log(result)
         }
         else if(apiResponse.status > 400 && apiResponse.status < 500){
@@ -127,6 +129,7 @@ const deleteMovie = async (query) => {
     if (apiResponse.status === 200){
         let result = await apiResponse.json()
         console.log(result)
+        makeLists()
         }
         else if(apiResponse.status > 400 && apiResponse.status < 500){
             throw new Error ("Client Side Error")
@@ -144,12 +147,21 @@ const displayAlert = (text, seconds) => {
     
 }
 
+const clearInputFields = () => {
+    document.getElementById('movieTitle').value = ''
+    document.getElementById('movieDescription').value = ''
+    document.getElementById('movieCategory').value = ''
+    document.getElementById('movieImageUrl').value = ''
+}
+
 const prepareMovies = async() => {
    for(category of categories){
        await getMovies(category)
    }
 }
 const makeLists = async () => {
+    categories = []
+    movies = {}
     await getCategories()
     await prepareMovies()
     displayCategoriesOffice()
@@ -157,7 +169,9 @@ const makeLists = async () => {
 }
 const displayCategoriesOffice = () => {
     let categorySelectors = document.getElementById('pills-tab')
+    categorySelectors.innerHTML = ''
     let categoryLists = document.getElementById('pills-tabContent')
+    categoryLists.innerHTML = ''
     for (category of categories){
         categorySelectors.innerHTML += `<li class="dropdown-item">
         <a

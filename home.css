@@ -67,3 +67,7 @@ h3 {
 li:hover {
   background-color: black !important;
 }
+
+li a:hover {
+  color: white !important;
+}
